@@ -1,0 +1,27 @@
+{
+  "name": "chromium-reactor-devtools",
+  "version": "0.0.1",
+  "description": "DevTools extension for Chromium Reactor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aswitalski/chromium-reactor-devtools.git"
+  },
+  "keywords": [
+    "chromium",
+    "reactor",
+    "devtools"
+  ],
+  "author": "Aleksander Świtalski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aswitalski/chromium-reactor-devtools/issues"
+  },
+  "homepage": "https://github.com/aswitalski/chromium-reactor-devtools#readme",
+  "devDependencies": {
+    "chromium-reactor": "git+https://github.com/aswitalski/chromium-reactor.git#devtools"
+  }
+}
