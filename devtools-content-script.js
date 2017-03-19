@@ -15,6 +15,7 @@
       highlight.style.display = 'none';
       highlight.style.position = 'fixed';
       highlight.style.zIndex = 1000;
+      highlight.style.cursor = 'pointer';
       highlight.style.backgroundColor = 'rgba(77, 137, 205, 0.5)';
       highlight.id = '__devtools_highlight__';
       document.body.appendChild(highlight);
