@@ -1,0 +1,17 @@
+{
+    "name": "Chromium Reactor DevTools",
+    "version": "0.0.1",
+    "description": "Chromium Reactor DevTools extension",
+    "devtools_page": "devtools.html",
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "permissions": [
+        "tabs",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "manifest_version": 2
+}

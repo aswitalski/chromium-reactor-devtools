@@ -1,0 +1,320 @@
+diff --git a/components/app-tile.js b/components/app-tile.js
+index 3f569e9..ce71404 100644
+--- a/components/app-tile.js
++++ b/components/app-tile.js
+@@ -20,7 +20,7 @@
+           onMouseLeave: () => {
+             InspectedPage.removeHighlight();
+           },
+-          onDblClick: () => {
++          onClick: () => {
+             ReactorHook.inspect(this.props.id);
+           }
+         },
+@@ -30,4 +30,4 @@
+   };
+ 
+   module.exports = AppTile;
+-}
+\ No newline at end of file
++}
+diff --git a/components/components-panel.js b/components/components-panel.js
+new file mode 100644
+index 0000000..b8cc6f5
+--- /dev/null
++++ b/components/components-panel.js
+@@ -0,0 +1,49 @@
++{
++  let ReactorHook;
++  let apps;
++
++  const ComponentsPanel = class extends Reactor.Root {
++
++    static async init() {
++      ReactorHook = await require('services/reactor-hook-client');
++      apps = await ReactorHook.getApps();
++    }
++
++    getInitialState() {
++      return {
++        apps
++      };
++    }
++
++    getReducers() {
++      return [];
++    }
++
++    render() {
++      return [
++        'div', {
++          class: 'panel'
++        },
++        [
++          'span', {
++            class: 'header'
++          }, 'Select app:'
++        ],
++        [
++          'div', {
++            class: 'components-app',
++          }, ...apps.map(app => [
++            AppTile, {
++              id: app.id,
++              name: app.name,
++            }
++          ])
++        ]
++      ];
++    }
++  };
++
++  const AppTile = require.def('components/app-tile');
++
++  module.exports = ComponentsPanel;
++}
+diff --git a/components/introspector-app.js b/components/introspector-app.js
+deleted file mode 100644
+index fb6a7f6..0000000
+--- a/components/introspector-app.js
++++ /dev/null
+@@ -1,47 +0,0 @@
+-{
+-  const getApps = () => {
+-    return new Promise((resolve, reject) => {
+-      chrome.devtools.inspectedWindow.eval('Reactor.__devtools_hook__.getApps()', (apps, isException) => {
+-        console.log('isException', isException);
+-        console.log('Reactor apps:', apps);
+-        if (isException) {
+-          reject(isException);
+-        }
+-        resolve(apps);
+-      });
+-    });
+-  };
+-
+-  let apps;
+-
+-  const IntrospectorApp = class extends Reactor.Root {
+-
+-    static async init() {
+-      apps = await getApps();
+-    }
+-
+-    getInitialState() {
+-      return { apps };
+-    }
+-
+-    getReducers() {
+-      return [];
+-    }
+-    render() {
+-      return [
+-        'div', {
+-          class: 'components-app',
+-        }, ...apps.map(app => [
+-          AppTile, {
+-            id: app.id,
+-            name: app.name,
+-          }
+-        ])
+-      ];
+-    }
+-  };
+-
+-  const AppTile = require.def('components/app-tile');
+-
+-  module.exports = IntrospectorApp;
+-}
+\ No newline at end of file
+diff --git a/devtools-content-script.js b/devtools-content-script.js
+index eabdda5..a7e9fa2 100644
+--- a/devtools-content-script.js
++++ b/devtools-content-script.js
+@@ -7,39 +7,30 @@
+ 
+     static init() {
+       console.log('DevTools content script initialized');
+-      let highlight = this.getHighlightElement();
+-      if (highlight) {
+-        highlight.remove();
+-      }
+-      highlight = document.createElement('div');
+-      highlight.style.display = 'none';
++    }
++
++    static highlight(rect) {
++      const highlight = document.createElement('div');
++      highlight.id = '__devtools_highlight__';
+       highlight.style.position = 'fixed';
+       highlight.style.zIndex = 1000;
+       highlight.style.cursor = 'pointer';
+       highlight.style.backgroundColor = 'rgba(77, 137, 205, 0.5)';
+-      highlight.id = '__devtools_highlight__';
+-      document.body.appendChild(highlight);
+-    }
+-
+-    static highlight(rect) {
+-      const highlight = this.getHighlightElement();
+-      highlight.style.display = '';
+       highlight.style.left = `${rect.left}px`;
+       highlight.style.top = `${rect.top}px`;
+       highlight.style.width = `${rect.width}px`;
+       highlight.style.height = `${rect.height}px`;
++      document.body.appendChild(highlight);
+     }
+ 
+     static removeHighlight() {
+       const highlight = this.getHighlightElement();
+-      highlight.style.display = 'none';
+-      highlight.style.left = '';
+-      highlight.style.top = '';
+-      highlight.style.width = '';
+-      highlight.style.height = '';
++      if (highlight) {
++        highlight.remove();
++      }
+     }
+   };
+ 
+   DevToolsExtension.init();
+   window.__devtools_extension__ = DevToolsExtension;
+-}
+\ No newline at end of file
++}
+diff --git a/devtools.html b/devtools.html
+index 36b7bef..586d83c 100644
+--- a/devtools.html
++++ b/devtools.html
+@@ -1 +1,7 @@
+-<script src="devtools.js"></script>
+\ No newline at end of file
++<!DOCTYPE html>
++<html>
++  <body>
++    <script src="node_modules/chromium-reactor/dist/reactor.release.js"></script>
++    <script src="devtools.js"></script>
++  </body>
++</html>
+diff --git a/devtools.js b/devtools.js
+index 6dc5d28..7f7c3d3 100644
+--- a/devtools.js
++++ b/devtools.js
+@@ -1,2 +1,11 @@
+-chrome.devtools.panels.create(
+-  'Components', 'toast.png', 'panel.html', panel => {});
+\ No newline at end of file
++const init = async () => {
++  
++  const ReactorHook = await require('services/reactor-hook-client');
++  
++  if (await ReactorHook.isReactorPresent()) {
++    chrome.devtools.panels.create(
++      'Components', 'toast.png', 'panel.html', panel => {});
++  }
++}
++
++init();
+diff --git a/manifest.json b/manifest.json
+new file mode 100644
+index 0000000..eaf7bd0
+--- /dev/null
++++ b/manifest.json
+@@ -0,0 +1,17 @@
++{
++    "name": "Chromium Reactor DevTools",
++    "version": "0.0.1",
++    "description": "Chromium Reactor DevTools extension",
++    "devtools_page": "devtools.html",
++    "background": {
++        "scripts": [
++            "background.js"
++        ]
++    },
++    "permissions": [
++        "tabs", 
++        "http://*/*",
++        "https://*/*"
++    ],
++    "manifest_version": 2
++}
+diff --git a/panel.html b/panel.html
+index d7647af..bde98e7 100644
+--- a/panel.html
++++ b/panel.html
+@@ -5,6 +5,13 @@
+ <body>
+   <div class="main"></div>
+   <style>
++    .panel {
++      padding: 10px;
++    }
++    .header {
++      font-size: 13px;
++      font-weight: bold;
++    }
+     .app {
+       border: 1px solid #aaa;
+       border-radius: 3px;
+@@ -15,7 +22,7 @@
+       vertical-align: middle;
+       padding: 40px 0;
+       float: left;
+-      margin: 20px 0 0 20px;
++      margin: 20px 20px 0 0;
+     }
+     .app:hover {
+       background-color: rgba(77, 137, 205, 0.2);
+@@ -25,4 +32,4 @@
+   <script src="messaging.js"></script>
+ 	<script src="panel.js"></script>
+ </body>
+-</html>
+\ No newline at end of file
++</html>
+diff --git a/panel.js b/panel.js
+index e5b8611..224e8dd 100644
+--- a/panel.js
++++ b/panel.js
+@@ -9,9 +9,9 @@ const injectContentScript = path => {
+ injectContentScript('devtools-content-script.js');
+ 
+ const renderIntrospector = async container => {
+-  const IntrospectorApp = require.def('components/introspector-app');
+-  const introspector = Reactor.create(IntrospectorApp);
+-  await introspector.preload();
+-  await introspector.render(container)
++  const ComponentsPanel = require.def('components/components-panel');
++  const panel = Reactor.create(ComponentsPanel);
++  await panel.preload();
++  await panel.render(container);
+ };
+-renderIntrospector(document.querySelector('.main'));
+\ No newline at end of file
++renderIntrospector(document.querySelector('.main'));
+diff --git a/services/reactor-hook-client.js b/services/reactor-hook-client.js
+index 69276fa..ac8aa37 100644
+--- a/services/reactor-hook-client.js
++++ b/services/reactor-hook-client.js
+@@ -23,6 +23,14 @@
+ 
+   const ReactorHookClient = class {
+ 
++    static isReactorPresent() {
++      return eval('!!window.Reactor');
++    }
++
++    static getApps() {
++      return execute('getApps');
++    }
++
+     static getBoundingRect(uuid) {
+       return execute('getBoundingRect', uuid);
+     }
+@@ -38,4 +46,4 @@
+   };
+ 
+   module.exports = ReactorHookClient;
+-}
+\ No newline at end of file
++}

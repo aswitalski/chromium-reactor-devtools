@@ -9,9 +9,9 @@ const injectContentScript = path => {
 injectContentScript('devtools-content-script.js');
 
 const renderIntrospector = async container => {
-  const IntrospectorApp = require.def('components/introspector-app');
-  const introspector = Reactor.create(IntrospectorApp);
-  await introspector.preload();
-  await introspector.render(container)
+  const ComponentsPanel = require.def('components/components-panel');
+  const panel = Reactor.create(ComponentsPanel);
+  await panel.preload();
+  await panel.render(container);
 };
 renderIntrospector(document.querySelector('.main'));

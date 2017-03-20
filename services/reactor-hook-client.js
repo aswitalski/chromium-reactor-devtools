@@ -23,6 +23,14 @@
 
   const ReactorHookClient = class {
 
+    static isReactorPresent() {
+      return eval('!!window.Reactor');
+    }
+
+    static getApps() {
+      return execute('getApps');
+    }
+
     static getBoundingRect(uuid) {
       return execute('getBoundingRect', uuid);
     }

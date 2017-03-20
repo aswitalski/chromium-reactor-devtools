@@ -20,7 +20,7 @@
           onMouseLeave: () => {
             InspectedPage.removeHighlight();
           },
-          onDblClick: () => {
+          onClick: () => {
             ReactorHook.inspect(this.props.id);
           }
         },
