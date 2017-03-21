@@ -1,10 +1,18 @@
-const init = async () => {
+const init = async() => {
 
   const ReactorHook = await require('services/reactor-hook-client');
+  const isReactorPresent = await ReactorHook.isReactorPresent();
 
-  if (await ReactorHook.isReactorPresent()) {
+  if (isReactorPresent) {
+    
     chrome.devtools.panels.create(
-      'Components', 'toast.png', 'panel.html', panel => {});
+      'Components', 'toast.png', 'panels/components/components-panel.html',
+      panel => {
+        console.log('Components panel:', panel);
+      });
+    chrome.devtools.panels.create(
+      'Introspector', 'toast.png', 'panels/components/introspector-panel.html',
+      panel => {});
   }
 }
 
