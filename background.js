@@ -2,7 +2,7 @@ chrome.extension.onConnect.addListener(connection => {
 
   console.log('Connected:', connection.name);
 
-  var extensionListener = function(message, sender, sendResponse) {
+  var extensionListener = (message, sender, sendResponse) => {
     if (message.tabId) {
       switch (message.action) {
         case 'code':
@@ -31,9 +31,9 @@ chrome.extension.onConnect.addListener(connection => {
   connection.onDisconnect.addListener(connection => {
     chrome.extension.onMessage.removeListener(extensionListener);
   });
-
 });
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log('chrome.runtime.onMessage', request);
   return true;
 });
