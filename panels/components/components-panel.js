@@ -1,5 +1,5 @@
 chrome.extension.connect({
-  name: 'Reactor DevTools Components Panel'
+  name: 'Components Panel'
 });
 
 chrome.extension.sendMessage({

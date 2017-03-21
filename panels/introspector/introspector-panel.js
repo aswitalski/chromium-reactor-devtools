@@ -1,5 +1,5 @@
 chrome.extension.connect({
-  name: 'Reactor DevTools Introspector Panel'
+  name: 'Introspector Panel'
 });
 
 chrome.extension.sendMessage({

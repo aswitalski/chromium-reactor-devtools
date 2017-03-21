@@ -12,7 +12,9 @@ const init = async() => {
       });
     chrome.devtools.panels.create(
       'Introspector', 'toast.png', 'panels/introspector/introspector-panel.html',
-      panel => {});
+      panel => {
+        console.log('Introspector panel:', panel);
+      });
   }
 }
 
