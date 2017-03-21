@@ -5,6 +5,11 @@
 .header {
   font-size: 13px;
   font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.item {
+  padding-left: 10px;
 }
 
 .app {
@@ -17,7 +22,7 @@
   vertical-align: middle;
   padding: 40px 0;
   float: left;
-  margin: 20px 20px 0 0;
+  margin: 10px 20px 0 0;
 }
 
 .app:hover {

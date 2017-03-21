@@ -4,14 +4,14 @@ const init = async() => {
   const isReactorPresent = await ReactorHook.isReactorPresent();
 
   if (isReactorPresent) {
-    
+
     chrome.devtools.panels.create(
       'Components', 'toast.png', 'panels/components/components-panel.html',
       panel => {
         console.log('Components panel:', panel);
       });
     chrome.devtools.panels.create(
-      'Introspector', 'toast.png', 'panels/components/introspector-panel.html',
+      'Introspector', 'toast.png', 'panels/introspector/introspector-panel.html',
       panel => {});
   }
 }
