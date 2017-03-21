@@ -2,7 +2,7 @@
   let ReactorHook;
   let apps;
 
-  const ComponentsPanel = class extends Reactor.Root {
+  const ComponentsApp = class extends Reactor.Root {
 
     static async init() {
       ReactorHook = await require('services/reactor-hook-client');
@@ -45,5 +45,5 @@
 
   const AppTile = require.def('components/app-tile');
 
-  module.exports = ComponentsPanel;
+  module.exports = ComponentsApp;
 }

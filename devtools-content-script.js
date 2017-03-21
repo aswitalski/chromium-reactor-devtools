@@ -5,8 +5,21 @@
       return document.querySelector('#__devtools_highlight__');
     }
 
+    static sendMessageToDevTools(type, data) {
+      chrome.runtime.sendMessage(Object.assign({
+        type
+      }, data));
+    }
+
     static init() {
-      console.log('DevTools content script initialized');
+      window.addEventListener('message', msg => {
+        if (msg.data.source === 'Reactor') {
+          const type = msg.data.type;
+          const data = msg.data.data;
+          this.sendMessageToDevTools(type, data);
+        };
+      });
+      console.log('Reactor DevTools extension connected.');
     }
 
     static highlight(rect) {
@@ -31,6 +44,8 @@
     }
   };
 
-  DevToolsExtension.init();
-  window.__devtools_extension__ = DevToolsExtension;
+  if (!window.__devtools_extension__) {
+    DevToolsExtension.init();
+    window.__devtools_extension__ = DevToolsExtension;
+  }
 }
