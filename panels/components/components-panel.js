@@ -8,7 +8,7 @@ chrome.extension.sendMessage({
 });
 
 const renderComponentsApp = async container => {
-  const ComponentsApp = require.def('components/components-app');
+  const ComponentsApp = loader.symbol('components/components-app');
   const app = Reactor.create(ComponentsApp);
   await app.preload();
   await app.render(document.body);

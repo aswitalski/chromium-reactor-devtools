@@ -1,6 +1,10 @@
 const init = async() => {
 
-  const ReactorHook = await require('services/reactor-hook-client');
+  loader.prefix('services', '/');
+  loader.prefix('reducers', '/');
+  loader.prefix('components', '/');
+
+  const ReactorHook = await loader.require('services/reactor-hook-client');
   const isReactorPresent = await ReactorHook.isReactorPresent();
 
   if (isReactorPresent) {

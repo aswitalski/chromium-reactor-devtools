@@ -13,7 +13,7 @@
     }
   };
 
-  const TreeNode = require.def('components/tree-node');
+  const TreeNode = loader.symbol('components/tree-node');
 
   module.exports = ComponentTree;
 }

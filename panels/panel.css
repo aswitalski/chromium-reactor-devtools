@@ -25,19 +25,38 @@
 }
 
 .tree-node .node-name::before {
-  content: '<';
   display: inline;
   padding-right: 1px;
 }
 
-.tree-node .node-name.end-tag::before {
-  content: '</';
-}
-
 .tree-node .node-name::after {
-  content: '>';
   display: inline;
   padding-left: 1px;
+}
+
+.element-node > .start-tag::before {
+  content: '<';
+}
+
+.element-node > .end-tag::before {
+  content: '</';
+  padding-right: 0;
+}
+
+.element-node > .node-name::after {
+  content: '>';
+}
+
+.component-node > .start-tag::before {
+  content: '{';
+}
+
+.component-node >.end-tag::before {
+  content: '{/';
+}
+
+.component-node > .node-name::after {
+  content: '}';
 }
 
 .element-node > .node-name {

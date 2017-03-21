@@ -5,7 +5,7 @@
   const IntrospectorApp = class extends Reactor.Root {
 
     static async init() {
-      ReactorHook = await require('services/reactor-hook-client');
+      ReactorHook = await loader.require('services/reactor-hook-client');
       apps = await ReactorHook.getApps();
     }
 

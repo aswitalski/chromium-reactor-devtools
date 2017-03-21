@@ -6,8 +6,8 @@
   const ComponentsApp = class extends Reactor.Root {
 
     static async init() {
-      ReactorHook = await require('services/reactor-hook-client');
-      reducer = await require('reducers/components-reducer');
+      ReactorHook = await loader.require('services/reactor-hook-client');
+      reducer = await loader.require('reducers/components-reducer');
       apps = await ReactorHook.getApps();
     }
 
@@ -42,8 +42,8 @@
     }
   };
 
-  const AppSelection = require.def('components/app-selection');
-  const ComponentTree = require.def('components/component-tree');
+  const AppSelection = loader.symbol('components/app-selection');
+  const ComponentTree = loader.symbol('components/component-tree');
 
   module.exports = ComponentsApp;
 }

@@ -35,7 +35,7 @@
     }
   };
 
-  const Node = require.def('components/tree-node');
+  const Node = loader.symbol('components/tree-node');
 
   module.exports = TreeNode;
 }

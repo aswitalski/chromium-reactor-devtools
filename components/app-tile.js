@@ -5,8 +5,8 @@
   const AppTile = class extends Reactor.Component {
 
     static async init() {
-      ReactorHook = await require('services/reactor-hook-client');
-      InspectedPage = await require('services/inspected-page-client');
+      ReactorHook = await loader.require('services/reactor-hook-client');
+      InspectedPage = await loader.require('services/inspected-page-client');
     }
 
     render() {

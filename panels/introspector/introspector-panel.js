@@ -8,7 +8,7 @@ chrome.extension.sendMessage({
 });
 
 const renderIntrospectorApp = async container => {
-  const IntrospectorApp = require.def('components/introspector-app');
+  const IntrospectorApp = loader.symbol('components/introspector-app');
   const app = Reactor.create(IntrospectorApp);
   await app.preload();
   await app.render(document.body);
