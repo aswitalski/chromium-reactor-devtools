@@ -2,7 +2,7 @@
   let ReactorHook;
   let apps;
 
-  const ComponentsPanel = class extends Reactor.Root {
+  const IntrospectorApp = class extends Reactor.Root {
 
     static async init() {
       ReactorHook = await require('services/reactor-hook-client');
@@ -11,7 +11,7 @@
 
     getInitialState() {
       return {
-        apps
+        apps: apps.length,
       };
     }
 
@@ -25,25 +25,20 @@
           class: 'panel'
         },
         [
-          'span', {
+          'div', {
             class: 'header'
-          }, 'Select app:'
+          },
+          'Module loader:'
         ],
         [
           'div', {
-            class: 'components-app',
-          }, ...apps.map(app => [
-            AppTile, {
-              id: app.id,
-              name: app.name,
-            }
-          ])
+            class: 'item',
+          },
+          '- Apps: ' + this.props.apps
         ]
       ];
     }
   };
 
-  const AppTile = require.def('components/app-tile');
-
-  module.exports = ComponentsPanel;
+  module.exports = IntrospectorApp;
 }

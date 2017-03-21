@@ -31,6 +31,10 @@
       return execute('getApps');
     }
 
+    static getApp(uuid) {
+      return execute('getApp', uuid);
+    }
+
     static getBoundingRect(uuid) {
       return execute('getBoundingRect', uuid);
     }

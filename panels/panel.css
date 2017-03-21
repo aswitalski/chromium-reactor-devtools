@@ -1,0 +1,66 @@
+.panel {
+  padding: 10px;
+}
+
+.header {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.item {
+  padding-left: 10px;
+}
+
+.tree-node {
+  padding-left: 2em;
+  font-family: Menlo, monospace;
+  font-size: 11px;
+  line-height: 15px;
+}
+
+.panel > .tree-node {
+  padding-left: 0;
+}
+
+.tree-node .node-name::before {
+  content: '<';
+  display: inline;
+  padding-right: 1px;
+}
+
+.tree-node .node-name.end-tag::before {
+  content: '</';
+}
+
+.tree-node .node-name::after {
+  content: '>';
+  display: inline;
+  padding-left: 1px;
+}
+
+.element-node > .node-name {
+  color: rgb(136, 18, 128);
+}
+
+.component-node > .node-name {
+  color: rgb(26, 26, 166);
+}
+
+.app {
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 40px 0;
+  float: left;
+  margin: 10px 20px 0 0;
+}
+
+.app:hover {
+  background-color: rgba(77, 137, 205, 0.2);
+}

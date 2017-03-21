@@ -1,32 +1,39 @@
-chrome.extension.onConnect.addListener(function(port) {
+chrome.extension.onConnect.addListener(connection => {
 
-  var extensionListener = function(message, sender, sendResponse) {
-    if (message.tabId && message.content) {
-      if (message.action === 'code') {
-        chrome.tabs.executeScript(message.tabId, {
-          code: message.content
-        });
-      } else if (message.action === 'script') {
-        chrome.tabs.executeScript(message.tabId, {
-          file: message.content
-        });
-      } else {
-        chrome.tabs.sendMessage(message.tabId, message, sendResponse);
+  console.log('Connected:', connection.name);
+
+  var extensionListener = (message, sender, sendResponse) => {
+    if (message.tabId) {
+      switch (message.action) {
+        case 'code':
+          return chrome.tabs.executeScript(message.tabId, {
+            code: message.content
+          });
+        case 'script':
+          return chrome.tabs.executeScript(message.tabId, {
+            file: message.content
+          });
+        case 'inspect':
+          return chrome.tabs.executeScript(message.tabId, {
+            file: 'devtools-content-script.js'
+          });
+        default:
+          return chrome.tabs.sendMessage(message.tabId, message, sendResponse);
       }
     } else {
-      port.postMessage(message);
+      connection.postMessage(message);
     }
     sendResponse(message);
   }
 
   chrome.extension.onMessage.addListener(extensionListener);
 
-  port.onDisconnect.addListener(function(port) {
+  connection.onDisconnect.addListener(connection => {
     chrome.extension.onMessage.removeListener(extensionListener);
   });
-
 });
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log('chrome.runtime.onMessage', request);
   return true;
 });

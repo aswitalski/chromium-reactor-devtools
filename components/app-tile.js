@@ -21,7 +21,8 @@
             InspectedPage.removeHighlight();
           },
           onClick: () => {
-            ReactorHook.inspect(this.props.id);
+            this.props.onClick();
+            // ReactorHook.inspect(this.props.id);
           }
         },
         this.props.name,
