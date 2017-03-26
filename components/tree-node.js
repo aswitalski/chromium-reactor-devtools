@@ -20,7 +20,11 @@
       }
       const isDebugged = this.props.type === 'component' &&
         this.props.debugged.includes(this.props.name);
-      const toggleDebug = () => {
+      const toggleDebug = event => {
+        if (event.metaKey) {
+          console.log('Opening resource:', this.props.path);
+          return chrome.devtools.panels.openResource(this.props.path);
+        }
         if (isDebugged) {
           this.props.undebug(this.props.appId, this.props.id);
         } else {
