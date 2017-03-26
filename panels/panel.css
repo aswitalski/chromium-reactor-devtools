@@ -13,6 +13,10 @@
   padding-left: 10px;
 }
 
+.debugged {
+  background-color: rgb(231, 235, 254);
+}
+
 .tree-node {
   padding-left: 2em;
   font-family: Menlo, monospace;
@@ -64,6 +68,7 @@
 }
 
 .component-node > .node-name {
+  cursor: pointer;
   color: rgb(26, 26, 166);
 }
 

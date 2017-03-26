@@ -1,14 +1,8 @@
 {
-  let InspectedPage;
-
   const AppSelection = class extends Reactor.Component {
 
-    static async init() {
-      InspectedPage = await loader.require('services/inspected-page-client');
-    }
-
     onDestroyed() {
-      InspectedPage.removeHighlight();
+      this.props.stopHighlighting();
     }
 
     render() {
@@ -28,6 +22,8 @@
             AppTile, {
               id: app.id,
               name: app.name,
+              highlight: this.props.highlight,
+              stopHighlighting: this.props.stopHighlighting,
               onClick: () => this.props.onAppSelected(app.id),
             }
           ])
