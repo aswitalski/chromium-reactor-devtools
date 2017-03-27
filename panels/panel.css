@@ -13,6 +13,14 @@
   padding-left: 10px;
 }
 
+.link {
+  display: inline-block;
+  text-decoration: none;
+  padding-bottom: 10px;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
 .debugged {
   background-color: rgb(231, 235, 254);
 }
@@ -24,7 +32,7 @@
   line-height: 15px;
 }
 
-.panel > .tree-node {
+.component-tree > .tree-node {
   padding-left: 0;
 }
 

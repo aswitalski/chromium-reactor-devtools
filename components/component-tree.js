@@ -12,10 +12,24 @@
       }, this.props.data);
       return [
         'div', {
-          class: 'panel component-tree'
-        },
+          class: 'panel '
+        }, [
+          'a', {
+            href: '#',
+            class: 'link',
+            onClick: this.props.unselectApp,
+          }, '..',
+        ],
         [
-          TreeNode, nodeProps,
+          'div', {
+            class: 'component-tree',
+            style: {
+              cursor: 'pointer',
+            }
+          },
+          [
+            TreeNode, nodeProps,
+          ],
         ],
       ];
     }

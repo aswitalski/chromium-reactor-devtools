@@ -25,6 +25,11 @@
     InspectedPage.removeHighlight();
   };
 
+  const loadComponentTree = async (appId, dispatch) => {
+    const data = await ReactorHook.getApp(appId);
+    dispatch(reducer.commands.loadComponentTree(appId, data));
+  };
+
   const ComponentsApp = class extends Reactor.Root {
 
     static async init() {
@@ -44,8 +49,15 @@
       return [reducer];
     }
 
+    updateComponentTree(appId) {
+      loadComponentTree(appId, this.dispatch);
+    }
+
     render() {
       if (this.props.appId) {
+        const unselectApp = name => {
+          this.dispatch(reducer.commands.unselectApp());
+        };
         const debugComponent = name => {
           this.dispatch(reducer.commands.debugComponent(name));
         };
@@ -67,6 +79,7 @@
             },
             highlight,
             stopHighlighting,
+            unselectApp,
           },
         ];
       } else {
@@ -76,8 +89,7 @@
             highlight,
             stopHighlighting,
             onAppSelected: async appId => {
-              const data = await ReactorHook.getApp(appId);
-              this.dispatch(reducer.commands.loadComponentTree(appId, data));
+              loadComponentTree(appId, this.dispatch);
             }
           },
         ];
