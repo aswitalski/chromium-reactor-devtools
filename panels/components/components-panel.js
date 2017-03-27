@@ -20,6 +20,11 @@ const renderComponentsApp = async container => {
       }
     }
   });
+
+  chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(
+    resource => {
+      app.root.reload();
+    });
 };
 
 renderComponentsApp();

@@ -47,6 +47,10 @@
       return execute('getComponentName', appId, componentId);
     }
 
+    static reloadApps() {
+      execute('reloadApps');
+    }
+
     static debug(appId, componentId) {
       const command = getCommand('getRenderFunction', appId, componentId);
       return eval(`debug(${command})`);

@@ -53,6 +53,10 @@
       loadComponentTree(appId, this.dispatch);
     }
 
+    reload() {
+      ReactorHook.reloadApps();
+    }
+
     render() {
       if (this.props.appId) {
         const unselectApp = name => {
