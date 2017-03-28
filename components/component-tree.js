@@ -2,18 +2,40 @@
   const ComponentTree = class extends Reactor.Component {
 
     render() {
+      const nodeProps = Object.assign({
+        appId: this.props.appId,
+        debugged: this.props.debugged,
+        debug: this.props.debug,
+        undebug: this.props.undebug,
+        highlight: this.props.highlight,
+        stopHighlighting: this.props.stopHighlighting,
+      }, this.props.data);
       return [
         'div', {
-          class: 'panel component-tree'
-        },
+          class: 'panel '
+        }, [
+          'a', {
+            href: '#',
+            class: 'link',
+            onClick: this.props.unselectApp,
+          }, '..',
+        ],
         [
-          TreeNode, this.props.data,
+          'div', {
+            class: 'component-tree',
+            style: {
+              cursor: 'pointer',
+            }
+          },
+          [
+            TreeNode, nodeProps,
+          ],
         ],
       ];
     }
   };
 
-  const TreeNode = require.def('components/tree-node');
+  const TreeNode = loader.symbol('components/tree-node');
 
   module.exports = ComponentTree;
 }

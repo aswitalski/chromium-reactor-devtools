@@ -31,20 +31,38 @@
       return execute('getApps');
     }
 
-    static getApp(uuid) {
-      return execute('getApp', uuid);
+    static getApp(appId) {
+      return execute('getApp', appId);
     }
 
-    static getBoundingRect(uuid) {
-      return execute('getBoundingRect', uuid);
+    static getBoundingRect(appId, nodeId) {
+      return execute('getBoundingRect', appId, nodeId);
     }
 
-    static getElement(uuid) {
-      return execute('getElement', uuid);
+    static getElement(appId, nodeId) {
+      return execute('getElement', appId, nodeId);
     }
 
-    static inspect(uuid) {
-      const command = getCommand('getElement', uuid);
+    static getComponentName(appId, componentId) {
+      return execute('getComponentName', appId, componentId);
+    }
+
+    static reloadApps() {
+      execute('reloadApps');
+    }
+
+    static debug(appId, componentId) {
+      const command = getCommand('getRenderFunction', appId, componentId);
+      return eval(`debug(${command})`);
+    }
+
+    static undebug(appId, componentId) {
+      const command = getCommand('getRenderFunction', appId, componentId);
+      return eval(`undebug(${command})`);
+    }
+
+    static inspect(appId, nodeId) {
+      const command = getCommand('getElement', appId, nodeId);
       return eval(`inspect(${command})`);
     }
   };

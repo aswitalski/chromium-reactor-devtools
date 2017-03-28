@@ -1,4 +1,4 @@
-chrome.extension.connect({
+const connection = chrome.extension.connect({
   name: 'Components Panel'
 });
 
@@ -8,10 +8,23 @@ chrome.extension.sendMessage({
 });
 
 const renderComponentsApp = async container => {
-  const ComponentsApp = require.def('components/components-app');
+  const ComponentsApp = loader.symbol('components/components-app');
   const app = Reactor.create(ComponentsApp);
   await app.preload();
   await app.render(document.body);
+
+  connection.onMessage.addListener(message => {
+    if (message.type === 'update-app') {
+      if (app.root.props.appId === message.appId) {
+        app.root.updateComponentTree(message.appId);
+      }
+    }
+  });
+
+  chrome.devtools.inspectedWindow.onResourceContentCommitted.addListener(
+    resource => {
+      app.root.reload();
+    });
 };
 
 renderComponentsApp();

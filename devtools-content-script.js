@@ -23,7 +23,15 @@
     }
 
     static highlight(rect) {
-      const highlight = document.createElement('div');
+      let highlight = this.getHighlightElement();
+      if (highlight) {
+        highlight.style.left = `${rect.left}px`;
+        highlight.style.top = `${rect.top}px`;
+        highlight.style.width = `${rect.width}px`;
+        highlight.style.height = `${rect.height}px`;
+        return;
+      }
+      highlight = document.createElement('div');
       highlight.id = '__devtools_highlight__';
       highlight.style.position = 'fixed';
       highlight.style.zIndex = 1000;

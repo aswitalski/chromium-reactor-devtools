@@ -13,6 +13,18 @@
   padding-left: 10px;
 }
 
+.link {
+  display: inline-block;
+  text-decoration: none;
+  padding-bottom: 10px;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+
+.debugged {
+  background-color: rgb(231, 235, 254);
+}
+
 .tree-node {
   padding-left: 2em;
   font-family: Menlo, monospace;
@@ -20,24 +32,43 @@
   line-height: 15px;
 }
 
-.panel > .tree-node {
+.component-tree > .tree-node {
   padding-left: 0;
 }
 
 .tree-node .node-name::before {
-  content: '<';
   display: inline;
   padding-right: 1px;
 }
 
-.tree-node .node-name.end-tag::before {
-  content: '</';
-}
-
 .tree-node .node-name::after {
-  content: '>';
   display: inline;
   padding-left: 1px;
+}
+
+.element-node > .start-tag::before {
+  content: '<';
+}
+
+.element-node > .end-tag::before {
+  content: '</';
+  padding-right: 0;
+}
+
+.element-node > .node-name::after {
+  content: '>';
+}
+
+.component-node > .start-tag::before {
+  content: '{';
+}
+
+.component-node >.end-tag::before {
+  content: '{/';
+}
+
+.component-node > .node-name::after {
+  content: '}';
 }
 
 .element-node > .node-name {
@@ -45,6 +76,7 @@
 }
 
 .component-node > .node-name {
+  cursor: pointer;
   color: rgb(26, 26, 166);
 }
 
