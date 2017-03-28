@@ -20,7 +20,7 @@
       }
       const isDebugged = this.props.type === 'component' &&
         this.props.debugged.includes(this.props.name);
-      const toggleDebug = event => {
+      const onDoubleClick = event => {
         if (event.metaKey) {
           console.log('Opening resource:', this.props.path);
           return chrome.devtools.panels.openResource(this.props.path);
@@ -31,38 +31,38 @@
           this.props.debug(this.props.appId, this.props.id);
         }
       };
+      const tagNameEventListeners = {
+        onMouseEnter: () => {
+          this.props.highlight(this.props.appId, this.props.id);
+        },
+        onMouseLeave: () => {
+          this.props.stopHighlighting();
+        },
+        onMouseDown: event => event.preventDefault(),
+        onDoubleClick,
+      };
       return [
         'div', {
           class: ['tree-node', `${this.props.type}-node`],
         },
         ...[
           [
-            'span', {
+            'span', Object.assign({
               class: ['node-name', 'start-tag', {
                 debugged: isDebugged,
               }],
-              onMouseEnter: () => {
-                this.props.highlight(this.props.appId, this.props.id);
-              },
-              onMouseLeave: () => {
-                this.props.stopHighlighting();
-              },
-              onMouseDown: event => event.preventDefault(),
-              onDoubleClick: toggleDebug,
-            },
+            }, tagNameEventListeners),
             this.props.name,
           ],
           ...childNodes, [
             'span', this.props.text ? this.props.text : '',
           ],
           [
-            'span', {
+            'span', Object.assign({
               class: ['node-name', 'end-tag', {
                 debugged: isDebugged,
               }],
-              onMouseDown: event => event.preventDefault(),
-              onDoubleClick: toggleDebug,
-            },
+            }, tagNameEventListeners),
             this.props.name,
           ],
         ],
